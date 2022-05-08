@@ -8,7 +8,7 @@ db = cluster["CGUScholar"]
 
 def count_userIDinlabel():
     print('start userID in label counter')
-    today = currentDate()
+    today = "2022-05-08"
     print(today)
     getlabelname = list(db.LabelDomain.find(
         {"updateTime": {"$regex": today}}))
@@ -21,13 +21,14 @@ def count_userIDinlabel():
             continue
         todayrecord['updateTime'] = today
         todayrecord['userIDcount'] = userIDlength
-        insertrecord = {'$push': {'countRecord': {'$each': [todayrecord]}}}
+        
         if db.Statistical_data.count_documents({'_id': label['_id']}, limit=1) != 0:
             print(label['_id'] + ' update ' + str(todayrecord['userIDcount']))
-
+            insertrecord = {'$push': {'countRecord': {'$each': [todayrecord]}}}
             db.Statistical_data.update_one({'_id': label['_id']}, insertrecord)
         else:
-            db.Statistical_data.insert_one({'_id': label['_id']}, insertrecord)
+            insertrecord = {'_id':label['_id'],'countRecord': [todayrecord]}
+            db.Statistical_data.insert_one(insertrecord)
             print(label['_id'] + ' insert ' + str(todayrecord['userIDcount']))
     return
 
