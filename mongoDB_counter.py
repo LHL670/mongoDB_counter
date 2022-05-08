@@ -2,8 +2,7 @@ from pymongo import MongoClient
 from getTime import currentDate
 import schedule
 import time
-cluster = MongoClient(
-    "mongodb+srv://CGUScholar:cguscholarpwd@cluster0.hvf4e.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+cluster = MongoClient("mongodb://localhost:27017/")
 db = cluster["CGUScholar"]
 
 
@@ -11,7 +10,7 @@ def count_userIDinlabel():
     print('start userID in label counter')
     today = currentDate()
     print(today)
-    getlabelname = list(db.Label_Domain.find(
+    getlabelname = list(db.LabelDomain.find(
         {"updateTime": {"$regex": today}}))
     if len(getlabelname) == 0:
         return
