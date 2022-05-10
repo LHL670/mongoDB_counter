@@ -8,7 +8,7 @@ db = cluster["CGUScholar"]
 
 def count_userIDinlabel():
     print('start userID in label counter')
-    today = "2022-05-08"
+    today = currentDate()
     print(today)
     getlabelname = list(db.LabelDomain.find(
         {"updateTime": {"$regex": today}}))
