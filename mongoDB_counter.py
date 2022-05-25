@@ -3,7 +3,7 @@ from getTime import currentDate
 import schedule
 import time
 cluster = MongoClient("mongodb://localhost:27017/")
-db = cluster["CGUScholar"]
+db = cluster["CGUScholar_com"]
 
 
 def count_userIDinlabel():
@@ -22,13 +22,13 @@ def count_userIDinlabel():
         todayrecord['updateTime'] = today
         todayrecord['userIDcount'] = userIDlength
         
-        if db.Statistical_data.count_documents({'_id': label['_id']}, limit=1) != 0:
+        if db.StatisticalData.count_documents({'_id': label['_id']}, limit=1) != 0:
             print(label['_id'] + ' update ' + str(todayrecord['userIDcount']))
             insertrecord = {'$push': {'countRecord': {'$each': [todayrecord]}}}
-            db.Statistical_data.update_one({'_id': label['_id']}, insertrecord)
+            db.StatisticalData.update_one({'_id': label['_id']}, insertrecord)
         else:
             insertrecord = {'_id':label['_id'],'countRecord': [todayrecord]}
-            db.Statistical_data.insert_one(insertrecord)
+            db.StatisticalData.insert_one(insertrecord)
             print(label['_id'] + ' insert ' + str(todayrecord['userIDcount']))
     return
 
